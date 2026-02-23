@@ -31,6 +31,7 @@ setup(
     packages=find_namespace_packages(where='src'),
     install_requires=[
         "image_dataset_converter",
+        "torchmetrics[image,visual]",
     ],
     version="0.0.1",
     author='Peter Reutemann',
