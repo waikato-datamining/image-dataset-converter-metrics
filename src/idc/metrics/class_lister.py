@@ -15,6 +15,7 @@ def list_classes() -> Dict[str, List[str]]:
         ],
         "seppl.io.Writer": [
             "idc.metrics.writer",
+            "idc.metrics.writer.imgcls",
         ],
         "idc.metrics.statistic.imgcls.ClassificationStatistic": [
             "idc.metrics.statistic.imgcls",
