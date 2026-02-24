@@ -1,10 +1,10 @@
 from dataclasses import dataclass
-from typing import Any
+from typing import List
 from idc.api import ImageData
 
 
 @dataclass
-class MetricsDataPair:
+class ImagePair:
     """
     Container for annotation/prediction pairs.
     """
@@ -16,20 +16,24 @@ class MetricsDataPair:
         return self.image_name
 
 
-@dataclass
-class GlobalStatistic:
+class ImagePairList(List[ImagePair]):
     """
-    Container for a global statistic.
+    Simple list of ImagePair objects.
     """
-    statistic: str = None
-    value: Any = None
 
+    def _check_type(self, item):
+        if not isinstance(item, ImagePair):
+            raise Exception("Only accepts objects of type: %s" % str(type(ImagePair)))
 
-@dataclass
-class ImageStatistic:
-    """
-    Container for a per-image statistic.
-    """
-    image_name: str = None
-    statistic: str = None
-    value: Any = None
+    def append(self, item):
+        self._check_type(item)
+        super().append(item)
+
+    def extend(self, iterable):
+        for item in iterable:
+            self._check_type(item)
+        super().extend(iterable)
+
+    def insert(self, index, object):
+        self._check_type(object)
+        super().insert(index, object)

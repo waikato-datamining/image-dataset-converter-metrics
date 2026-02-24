@@ -8,8 +8,15 @@ def list_classes() -> Dict[str, List[str]]:
         ],
         "seppl.io.Filter": [
             "idc.metrics.filter",
+            "idc.metrics.filter.depth",
+            "idc.metrics.filter.imgcls",
+            "idc.metrics.filter.imgseg",
+            "idc.metrics.filter.objdet",
         ],
         "seppl.io.Writer": [
             "idc.metrics.writer",
+        ],
+        "idc.metrics.statistic.imgcls.ClassificationStatistic": [
+            "idc.metrics.statistic.imgcls",
         ],
     }

@@ -1,6 +1,6 @@
 # load-metrics-pairs
 
-* generates: idc.metrics.api.MetricsDataPair
+* generates: idc.metrics.api.ImagePair
 
 Loads the annotation/prediction pairs using the respective sub-flows and forwards matching pairs for calculating metrics.
 

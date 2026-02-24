@@ -37,6 +37,9 @@ setup(
     author='Peter Reutemann',
     author_email='fracpete@waikato.ac.nz',
     entry_points={
+        "console_scripts": [
+            "idc-metrics-help=idc.metrics.tool.help:sys_main",
+        ],
         "class_lister": [
             "idc.metrics=idc.metrics.class_lister",
         ],

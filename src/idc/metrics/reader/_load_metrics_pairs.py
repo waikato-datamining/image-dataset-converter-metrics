@@ -4,7 +4,7 @@ from typing import List, Iterable, Tuple, Optional, Dict
 from wai.logging import LOGGING_WARNING
 
 from idc.api import ImageData
-from idc.metrics.api import MetricsDataPair
+from idc.metrics.api import ImagePair, ImagePairList
 from idc.registry import available_readers, available_filters
 from kasperl.api import PIPELINE_FORMATS, PIPELINE_FORMAT_CMDLINE, load_pipeline
 from kasperl.api import Reader
@@ -94,7 +94,7 @@ class LoadMetricsPairsReader(Reader):
         :return: the list of classes
         :rtype: list
         """
-        return [MetricsDataPair]
+        return [ImagePair]
 
     def _parse_sub_flow(self, flow: str, flow_format: str) -> List[Plugin]:
         """
@@ -228,14 +228,16 @@ class LoadMetricsPairsReader(Reader):
         if len(self._common_names) == 0:
             return None
 
+        result = ImagePairList()
         for image_name in self._common_names:
             if type(annotations_lookup[image_name]) is not type(predictions_lookup[image_name]):
                 raise Exception("Annotation and prediction differ in type: %s != %s"
                                 % (str(type(annotations_lookup[image_name])), str(type(predictions_lookup[image_name]))))
-            yield MetricsDataPair(
+            result.append(ImagePair(
                 image_name=image_name,
                 annotation=annotations_lookup[image_name],
-                prediction=predictions_lookup[image_name])
+                prediction=predictions_lookup[image_name]))
+        yield result
 
         self._common_names = None
         return None

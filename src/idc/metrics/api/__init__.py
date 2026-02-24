@@ -1,1 +1,1 @@
-from ._data import MetricsDataPair, GlobalStatistic, ImageStatistic
+from ._data import ImagePair, ImagePairList
