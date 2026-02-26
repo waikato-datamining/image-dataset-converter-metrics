@@ -3,13 +3,12 @@ from typing import List
 
 from wai.logging import LOGGING_WARNING
 
-from build.lib.seppl import SessionHandler
 from idc.metrics.api import ImagePairList
 from idc.metrics.registry import available_imgcls_statistics
 from idc.metrics.statistic import DatasetStatisticList
 from idc.metrics.statistic.imgcls import ClassificationStatistic
 from idc.metrics.statistic.imgcls import NumClassesHandler, determine_classes
-from seppl import split_args, Plugin, Initializable, init_initializable, split_cmdline
+from seppl import SessionHandler, split_args, Plugin, Initializable, init_initializable, split_cmdline
 from seppl.io import BatchFilter
 
 
