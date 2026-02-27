@@ -32,6 +32,7 @@ setup(
     install_requires=[
         "image_dataset_converter",
         "torchmetrics[image,visual]",
+        "pycocotools",
     ],
     version="0.0.1",
     author='Peter Reutemann',
