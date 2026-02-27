@@ -1,7 +1,7 @@
 import abc
 import argparse
 import logging
-from typing import List
+from typing import List, Tuple, Optional, Dict
 
 from wai.logging import LOGGING_WARNING
 
@@ -10,7 +10,7 @@ from kasperl.api import make_list
 from idc.metrics.statistic import DatasetStatisticFilter, DatasetStatistic
 
 
-def determine_classes(data: ImagePairList, logger: logging.Logger = None):
+def determine_classes(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Optional, Optional, Optional[Dict[str, int]]]:
     """
     Processes the image pairs and returns the classes and the lookup.
 
