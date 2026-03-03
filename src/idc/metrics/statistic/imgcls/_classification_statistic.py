@@ -5,12 +5,13 @@ from typing import List, Tuple, Optional, Dict
 
 from wai.logging import LOGGING_WARNING
 
+from idc.api import ImageData
 from idc.metrics.api import ImagePairList
 from kasperl.api import make_list
 from idc.metrics.statistic import DatasetStatisticFilter, DatasetStatistic
 
 
-def determine_classes(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Optional, Optional, Optional[Dict[str, int]]]:
+def determine_classes(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Optional[ImageData], Optional[ImageData], Optional[Dict[str, int]]]:
     """
     Processes the image pairs and returns the classes and the lookup.
 
