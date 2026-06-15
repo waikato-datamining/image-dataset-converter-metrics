@@ -7,10 +7,10 @@ from wai.logging import LOGGING_WARNING
 from idc.api import ImageClassificationData
 from idc.metrics.api import ImagePairList, ImagePair
 from kasperl.api import BatchWriter
-from seppl.placeholders import placeholder_list, PlaceholderSupporter
+from seppl.variables import VariableSupporter, variable_list
 
 
-class ActualVsPredictedCSVWriter(BatchWriter, PlaceholderSupporter):
+class ActualVsPredictedCSVWriter(BatchWriter, VariableSupporter):
 
     def __init__(self, output_file: str = None, column_image: str = None, column_actual: str = None, column_predicted: str = None,
                  logger_name: str = None, logging_level: str = LOGGING_WARNING):
@@ -62,7 +62,7 @@ class ActualVsPredictedCSVWriter(BatchWriter, PlaceholderSupporter):
         :rtype: argparse.ArgumentParser
         """
         parser = super()._create_argparser()
-        parser.add_argument("-o", "--output", type=str, help="The CSV file to store the actual vs predicted data in. " + placeholder_list(obj=self), required=True)
+        parser.add_argument("-o", "--output", type=str, help="The CSV file to store the actual vs predicted data in. " + variable_list(obj=self), required=True)
         parser.add_argument("-i", "--column_image", type=str, help="The column name for the image name.", required=False, default="Image")
         parser.add_argument("-a", "--column_actual", type=str, help="The column name for the actual values.", required=False, default="Actual")
         parser.add_argument("-p", "--column_predicted", type=str, help="The column name for the predicted values.", required=False, default="Predicted")
@@ -123,7 +123,7 @@ class ActualVsPredictedCSVWriter(BatchWriter, PlaceholderSupporter):
                 if isinstance(pair.annotation, ImageClassificationData):
                     rows.append([pair.image_name, pair.annotation.annotation, pair.prediction.annotation])
 
-            path = self.session.expand_placeholders(self.output_file)
+            path = self.session.expand_variables(self.output_file)
             self.logger().info("Writing data to: %s" % path)
             with open(path, "w") as fp:
                 writer = csv.writer(fp, quoting=csv.QUOTE_MINIMAL)
