@@ -1,17 +1,16 @@
 import abc
 import argparse
 import logging
-from typing import List, Tuple, Optional, Dict
+from typing import List, Tuple, Optional, Dict, Any
 
 from wai.logging import LOGGING_WARNING
 
-from idc.api import ImageData
 from idc.metrics.api import ImagePairList
 from kasperl.api import make_list
 from idc.metrics.statistic import DatasetStatisticFilter, DatasetStatistic
 
 
-def determine_classes(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Optional[ImageData], Optional[ImageData], Optional[Dict[str, int]]]:
+def prepare_data(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Optional[Any], Optional[Any], Optional[Dict[str, int]]]:
     """
     Processes the image pairs and returns the classes and the lookup.
 
@@ -154,7 +153,7 @@ class ClassificationStatistic(DatasetStatisticFilter, NumClassesHandler, abc.ABC
         :return: the statistic
         """
         result = None
-        anns, preds, lookup = determine_classes(data)
+        anns, preds, lookup = prepare_data(data)
         if (anns is not None) and (preds is not None):
             result = self.calculate(preds, anns)
 

@@ -7,7 +7,7 @@ from idc.metrics.api import ImagePairList
 from idc.metrics.registry import available_imgcls_statistics
 from idc.metrics.statistic import DatasetStatisticList
 from idc.metrics.statistic.imgcls import ClassificationStatistic
-from idc.metrics.statistic.imgcls import NumClassesHandler, determine_classes
+from idc.metrics.statistic.imgcls import NumClassesHandler, prepare_data
 from seppl import SessionHandler, split_args, Plugin, Initializable, init_initializable, split_cmdline
 from seppl.io import BatchFilter
 
@@ -49,7 +49,7 @@ class SummaryStatistics(BatchFilter):
         :return: the description
         :rtype: str
         """
-        return "Calculates summary statistics for the incoming data pairs."
+        return "Calculates summary statistics for the incoming image classification pairs."
 
     def accepts(self) -> List:
         """
@@ -133,7 +133,7 @@ class SummaryStatistics(BatchFilter):
         :param data: the record(s) to process
         :return: the potentially updated record(s)
         """
-        anns, preds, lookup = determine_classes(data, logger=self.logger())
+        anns, preds, lookup = prepare_data(data, logger=self.logger())
         result = DatasetStatisticList()
         for statistic in self._statistics:
             if isinstance(statistic, NumClassesHandler):
