@@ -1,5 +1,4 @@
 import argparse
-from typing import List
 
 from wai.logging import LOGGING_WARNING
 
