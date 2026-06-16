@@ -94,7 +94,7 @@ class LoadMetricsPairsReader(Reader):
         :return: the list of classes
         :rtype: list
         """
-        return [ImagePair]
+        return [ImagePairList]
 
     def _parse_sub_flow(self, flow: str, flow_format: str) -> List[Plugin]:
         """
