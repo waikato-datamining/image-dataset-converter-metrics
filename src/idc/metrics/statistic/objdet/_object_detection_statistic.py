@@ -82,7 +82,6 @@ class ObjectDetectionStatistic(DatasetStatisticFilter, abc.ABC):
         """
         super().__init__(logger_name=logger_name, logging_level=logging_level)
         self._statistic = None
-        self._class_lookup = None
 
     def _initialize_statistic(self):
         """
