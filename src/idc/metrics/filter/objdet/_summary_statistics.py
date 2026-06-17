@@ -120,7 +120,7 @@ class SummaryStatistics(BatchFilter):
 
         for statistic in self._statistics:
             if not isinstance(statistic, ObjectDetectionStatistic):
-                raise Exception("Not a object detection statistic: %s" % str(type(statistic)))
+                raise Exception("Not an object detection statistic: %s" % str(type(statistic)))
             if isinstance(statistic, SessionHandler):
                 statistic.session = self.session
             if isinstance(statistic, Initializable):
