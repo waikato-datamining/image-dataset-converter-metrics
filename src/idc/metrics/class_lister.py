@@ -20,6 +20,9 @@ def list_classes() -> Dict[str, List[str]]:
         "idc.metrics.statistic.imgcls.ClassificationStatistic": [
             "idc.metrics.statistic.imgcls",
         ],
+        "idc.metrics.statistic.imgseg.ImageSegmentationStatistic": [
+            "idc.metrics.statistic.imgseg",
+        ],
         "idc.metrics.statistic.objdet.ObjectDetectionStatistic": [
             "idc.metrics.statistic.objdet",
         ],

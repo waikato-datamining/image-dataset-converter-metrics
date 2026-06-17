@@ -10,6 +10,13 @@ def available_imgcls_statistics() -> Dict[str, Plugin]:
     return REGISTRY.plugins("idc.metrics.statistic.imgcls.ClassificationStatistic")
 
 
+def available_imgseg_statistics() -> Dict[str, Plugin]:
+    """
+    Returns all image segmentation statistics plugins.
+    """
+    return REGISTRY.plugins("idc.metrics.statistic.imgseg.ImageSegmentationStatistic")
+
+
 def available_objdet_statistics() -> Dict[str, Plugin]:
     """
     Returns all image classification statistics plugins.
@@ -23,5 +30,6 @@ def available_statistics() -> Dict[str, Plugin]:
     """
     result = dict()
     result.update(available_imgcls_statistics())
+    result.update(available_imgseg_statistics())
     result.update(available_objdet_statistics())
     return result

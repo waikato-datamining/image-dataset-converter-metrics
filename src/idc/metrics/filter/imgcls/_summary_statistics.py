@@ -5,9 +5,8 @@ from wai.logging import LOGGING_WARNING
 
 from idc.metrics.api import ImagePairList
 from idc.metrics.registry import available_imgcls_statistics
-from idc.metrics.statistic import DatasetStatisticList
-from idc.metrics.statistic.imgcls import ClassificationStatistic
-from idc.metrics.statistic.imgcls import NumClassesHandler, prepare_data
+from idc.metrics.statistic import DatasetStatisticList, NumClassesHandler
+from idc.metrics.statistic.imgcls import ClassificationStatistic, prepare_data
 from seppl import SessionHandler, split_args, Plugin, Initializable, init_initializable, split_cmdline
 from seppl.io import BatchFilter
 

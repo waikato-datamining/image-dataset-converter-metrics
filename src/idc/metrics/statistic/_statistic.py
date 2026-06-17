@@ -152,3 +152,18 @@ class ImageStatisticFilter(BatchFilter, abc.ABC):
         :rtype: ImageStatistic
         """
         raise NotImplementedError()
+
+
+class NumClassesHandler:
+    """
+    Mixin for classes that require to know the number of classes.
+    """
+
+    def set_num_classes(self, num_classes: int):
+        """
+        Sets the number of classes to use.
+
+        :param num_classes: the number of classes
+        :type num_classes: int
+        """
+        raise NotImplementedError()

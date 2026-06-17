@@ -7,7 +7,7 @@ from wai.logging import LOGGING_WARNING
 
 from idc.metrics.api import ImagePairList
 from kasperl.api import make_list
-from idc.metrics.statistic import DatasetStatisticFilter, DatasetStatistic, DatasetStatisticList
+from idc.metrics.statistic import DatasetStatisticFilter, DatasetStatistic, DatasetStatisticList, NumClassesHandler
 
 
 def prepare_data(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Optional[Any], Optional[Any], Optional[Dict[str, int]]]:
@@ -47,21 +47,6 @@ def prepare_data(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Op
         return anns, preds, lookup
 
     return None, None, None
-
-
-class NumClassesHandler:
-    """
-    Mixin for classes that require to know the number of classes.
-    """
-
-    def set_num_classes(self, num_classes: int):
-        """
-        Sets the number of classes to use.
-
-        :param num_classes: the number of classes
-        :type num_classes: int
-        """
-        raise NotImplementedError()
 
 
 class ClassificationStatistic(DatasetStatisticFilter, NumClassesHandler, abc.ABC):
