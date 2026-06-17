@@ -1,7 +1,7 @@
 # accuracy-ic
 
 * accepts: idc.metrics.api.ImagePairList
-* generates: idc.metrics.statistic.DatasetStatistic
+* generates: idc.metrics.statistic.DatasetStatistic, idc.metrics.statistic.DatasetStatisticList
 
 Calculates the accuracy for image classification data.
 

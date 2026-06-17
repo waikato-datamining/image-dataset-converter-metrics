@@ -3,13 +3,13 @@
 * accepts: idc.metrics.api.ImagePairList
 * generates: idc.metrics.statistic.DatasetStatisticList
 
-Calculates summary statistics for the incoming data pairs.
+Calculates summary statistics for the incoming image classification pairs.
 
 ```
 usage: summary-statistics-ic [-h] [-l {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
                              [-N LOGGER_NAME] [--skip] -s STATISTICS
 
-Calculates summary statistics for the incoming data pairs.
+Calculates summary statistics for the incoming image classification pairs.
 
 options:
   -h, --help            show this help message and exit

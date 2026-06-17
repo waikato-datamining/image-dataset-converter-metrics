@@ -1,15 +1,15 @@
-# auroc-ic
+# summary-statistics-od
 
 * accepts: idc.metrics.api.ImagePairList
-* generates: idc.metrics.statistic.DatasetStatistic
+* generates: idc.metrics.statistic.DatasetStatisticList
 
-Calculates the area under the ROC curve for image classification data.
+Calculates summary statistics for the incoming object detection pairs.
 
 ```
-usage: auroc-ic [-h] [-l {DEBUG,INFO,WARNING,ERROR,CRITICAL}] [-N LOGGER_NAME]
-                [--skip] [-n NUM_CLASSES]
+usage: summary-statistics-od [-h] [-l {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
+                             [-N LOGGER_NAME] [--skip] -s STATISTICS
 
-Calculates the area under the ROC curve for image classification data.
+Calculates summary statistics for the incoming object detection pairs.
 
 options:
   -h, --help            show this help message and exit
@@ -20,6 +20,7 @@ options:
                         name by default (default: None)
   --skip                Disables the plugin, removing it from the pipeline.
                         (default: False)
-  -n NUM_CLASSES, --num_classes NUM_CLASSES
-                        The number of classes in the dataset. (default: None)
+  -s STATISTICS, --statistics STATISTICS
+                        The summary statistics (object detection) to
+                        calculate. (default: None)
 ```

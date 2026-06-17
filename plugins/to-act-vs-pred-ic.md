@@ -1,6 +1,6 @@
 # to-act-vs-pred-ic
 
-* accepts: idc.metrics.api.ImagePair
+* accepts: idc.metrics.api.ImagePairList
 
 Outputs a CSV file with actual vs predicted columns.
 
@@ -22,7 +22,7 @@ options:
                         (default: False)
   -o OUTPUT, --output OUTPUT
                         The CSV file to store the actual vs predicted data in.
-                        Supported placeholders: {HOME}, {CWD}, {TMP} (default:
+                        Supported variables: {HOME}, {CWD}, {TMP} (default:
                         None)
   -i COLUMN_IMAGE, --column_image COLUMN_IMAGE
                         The column name for the image name. (default: Image)
@@ -34,7 +34,7 @@ options:
                         Predicted)
 ```
 
-Available placeholders:
+Available variables:
 
 * `{HOME}`: The home directory of the current user.
 * `{CWD}`: The current working directory.

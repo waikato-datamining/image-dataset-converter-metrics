@@ -10,7 +10,7 @@ from wai.logging import init_logging, set_logging_level, add_logging_level
 from idc.core import ENV_IDC_LOGLEVEL
 from idc.help import generate_plugin_usage, HELP_FORMATS, HELP_FORMAT_TEXT, HELP_FORMAT_MARKDOWN, add_plugins_to_index
 from idc.registry import register_plugins, REGISTRY
-from idc.metrics.registry import available_imgcls_statistics, available_statistics
+from idc.metrics.registry import available_imgcls_statistics, available_statistics, available_objdet_statistics
 
 HELP = "idc-metrics-help"
 
@@ -93,6 +93,7 @@ def output_help(custom_class_listers: List[str] = None, excluded_class_listers: 
         plugin_lines = []
         if plugin_type == PLUGIN_TYPE_STATS:
             add_plugins_to_index("Image classification", available_imgcls_statistics(), help_format, plugin_lines)
+            add_plugins_to_index("Object detection", available_objdet_statistics(), help_format, plugin_lines)
         else:
             raise Exception("Unhandled plugin type: %s" % plugin_type)
 

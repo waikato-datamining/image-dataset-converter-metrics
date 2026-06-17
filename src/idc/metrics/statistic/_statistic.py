@@ -1,6 +1,6 @@
 import abc
 from dataclasses import dataclass
-from typing import List, Any
+from typing import List, Any, Union
 
 from seppl.io import BatchFilter
 from idc.metrics.api import ImagePair, ImagePairList
@@ -25,7 +25,7 @@ class DatasetStatisticList(List[DatasetStatistic]):
 
     def _check_type(self, item):
         if not isinstance(item, DatasetStatistic):
-            raise Exception("Only accepts objects of type: %s" % str(type(DatasetStatistic)))
+            raise Exception("Only accepts objects of type '%s', but got: %s" % (str(DatasetStatistic), str(type(item))))
 
     def append(self, item):
         self._check_type(item)
@@ -104,16 +104,17 @@ class DatasetStatisticFilter(BatchFilter, abc.ABC):
         :return: the list of classes
         :rtype: list
         """
-        return [DatasetStatistic]
+        return [DatasetStatistic, DatasetStatisticList]
 
-    def calculate(self, anns, preds) -> DatasetStatistic:
+    def calculate(self, anns, preds, meta=None) -> Union[DatasetStatistic, DatasetStatisticList]:
         """
         Calculates the statistic from the tensors with annotations and predictions.
 
         :param anns: the tensor with the class label indices of the annotations
         :param preds: the tensor with the class label indices of the predictions
-        :return: the generated statistic
-        :rtype: DatasetStatistic
+        :param meta: optional meta-data that is required for the calculation (domain-specific)
+        :return: the generated statistic(s)
+        :rtype: DatasetStatistic or DatasetStatisticList
         """
         raise NotImplementedError()
 

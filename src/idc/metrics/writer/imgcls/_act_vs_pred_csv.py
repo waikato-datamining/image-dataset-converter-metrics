@@ -88,7 +88,7 @@ class ActualVsPredictedCSVWriter(BatchWriter, VariableSupporter):
         :return: the list of classes
         :rtype: list
         """
-        return [ImagePair]
+        return [ImagePairList]
 
     def initialize(self):
         """

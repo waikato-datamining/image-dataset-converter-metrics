@@ -4,10 +4,10 @@ from typing import List
 from wai.logging import LOGGING_WARNING
 
 from idc.metrics.api import ImagePairList
-from idc.metrics.registry import available_imgcls_statistics
+from idc.metrics.registry import available_objdet_statistics
 from idc.metrics.statistic import DatasetStatisticList
-from idc.metrics.statistic.imgcls import ClassificationStatistic
-from idc.metrics.statistic.imgcls import NumClassesHandler, prepare_data
+from idc.metrics.statistic.objdet import ObjectDetectionStatistic
+from idc.metrics.statistic.objdet import prepare_data
 from seppl import SessionHandler, split_args, Plugin, Initializable, init_initializable, split_cmdline
 from seppl.io import BatchFilter
 
@@ -40,7 +40,7 @@ class SummaryStatistics(BatchFilter):
         :return: the name
         :rtype: str
         """
-        return "summary-statistics-ic"
+        return "summary-statistics-od"
 
     def description(self) -> str:
         """
@@ -49,7 +49,7 @@ class SummaryStatistics(BatchFilter):
         :return: the description
         :rtype: str
         """
-        return "Calculates summary statistics for the incoming image classification pairs."
+        return "Calculates summary statistics for the incoming object detection pairs."
 
     def accepts(self) -> List:
         """
@@ -77,7 +77,7 @@ class SummaryStatistics(BatchFilter):
         :rtype: argparse.ArgumentParser
         """
         parser = super()._create_argparser()
-        parser.add_argument("-s", "--statistics", type=str, default=None, help="The summary statistics to calculate.", required=True)
+        parser.add_argument("-s", "--statistics", type=str, default=None, help="The summary statistics (object detection) to calculate.", required=True)
         return parser
 
     def _parse_statistics(self) -> List[Plugin]:
@@ -92,7 +92,7 @@ class SummaryStatistics(BatchFilter):
 
         # split command-line into valid plugin subsets
         valid = dict()
-        valid.update(available_imgcls_statistics())
+        valid.update(available_objdet_statistics())
         stats = split_cmdline(self.statistics)
         args = split_args(stats, list(valid.keys()))
         return args_to_objects(args, valid, allow_global_options=False)
@@ -119,8 +119,8 @@ class SummaryStatistics(BatchFilter):
         self._statistics = self._parse_statistics()
 
         for statistic in self._statistics:
-            if not isinstance(statistic, ClassificationStatistic):
-                raise Exception("Not a classification statistic: %s" % str(type(statistic)))
+            if not isinstance(statistic, ObjectDetectionStatistic):
+                raise Exception("Not a object detection statistic: %s" % str(type(statistic)))
             if isinstance(statistic, SessionHandler):
                 statistic.session = self.session
             if isinstance(statistic, Initializable):
@@ -136,12 +136,13 @@ class SummaryStatistics(BatchFilter):
         anns, preds, lookup = prepare_data(data, logger=self.logger())
         result = DatasetStatisticList()
         for statistic in self._statistics:
-            if isinstance(statistic, NumClassesHandler):
-                statistic.set_num_classes(len(lookup))
-            if isinstance(statistic, ClassificationStatistic):
+            if isinstance(statistic, ObjectDetectionStatistic):
                 try:
                     stat = statistic.calculate(anns, preds, meta=lookup)
-                    result.append(stat)
+                    if isinstance(stat, DatasetStatisticList):
+                        result.extend(stat)
+                    else:
+                        result.append(stat)
                 except:
                     self.logger().exception("Failed to obtain statistic: %s" % str(type(statistic)))
             else:

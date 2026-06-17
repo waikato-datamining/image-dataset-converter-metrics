@@ -1,13 +1,13 @@
 import abc
 import argparse
 import logging
-from typing import List, Tuple, Optional, Dict, Any
+from typing import List, Tuple, Optional, Dict, Any, Union
 
 from wai.logging import LOGGING_WARNING
 
 from idc.metrics.api import ImagePairList
 from kasperl.api import make_list
-from idc.metrics.statistic import DatasetStatisticFilter, DatasetStatistic
+from idc.metrics.statistic import DatasetStatisticFilter, DatasetStatistic, DatasetStatisticList
 
 
 def prepare_data(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Optional[Any], Optional[Any], Optional[Dict[str, int]]]:
@@ -130,14 +130,37 @@ class ClassificationStatistic(DatasetStatisticFilter, NumClassesHandler, abc.ABC
         """
         raise NotImplementedError()
 
-    def calculate(self, anns, preds) -> DatasetStatistic:
+    def _prepare_data(self, data) -> Tuple[Optional[Any], Optional[Any], Optional[Dict[str, int]]]:
+        """
+        Processes the image pairs and returns the classes and the lookup.
+
+        :param data: the image pairs to use
+        :type data: ImagePairList
+        :return: the tuple of: annotation classes, predictions classes and the class lookup
+        :rtype: tuple
+        """
+        return prepare_data(data, logger=self.logger())
+
+    def _post_process(self, stat: DatasetStatistic, meta: Optional[Dict[str, int]] = None):
+        """
+        For post-processing the statistic.
+
+        :param stat: the statistic to post-process
+        :type stat: DatasetStatistic
+        :param meta: the class lookup
+        :type meta: dict
+        """
+        pass
+
+    def calculate(self, anns, preds, meta=None) -> Union[DatasetStatistic, DatasetStatisticList]:
         """
         Calculates the statistic from the tensors with annotations and predictions.
 
         :param anns: the tensor with the class label indices of the annotations
         :param preds: the tensor with the class label indices of the predictions
-        :return: the generated statistic
-        :rtype: DatasetStatistic
+        :param meta: optional meta-data that is required for the calculation (domain-specific)
+        :return: the generated statistic(s)
+        :rtype: DatasetStatistic or DatasetStatisticList
         """
         if self._statistic is None:
             self._initialize_statistic()
@@ -153,9 +176,10 @@ class ClassificationStatistic(DatasetStatisticFilter, NumClassesHandler, abc.ABC
         :return: the statistic
         """
         result = None
-        anns, preds, lookup = prepare_data(data)
+        anns, preds, lookup = self._prepare_data(data)
         if (anns is not None) and (preds is not None):
-            result = self.calculate(preds, anns)
+            result = self.calculate(preds, anns, meta=lookup)
+            self._post_process(result, meta=lookup)
 
         return result
 
