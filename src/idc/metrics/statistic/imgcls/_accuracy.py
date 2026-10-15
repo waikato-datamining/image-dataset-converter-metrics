@@ -1,24 +1,25 @@
 import argparse
+from typing import Union
 
+from sklearn.metrics import accuracy_score, top_k_accuracy_score
 from wai.logging import LOGGING_WARNING
 
-from ._classification_statistic import ClassificationStatisticWithAverage
+from idc.metrics.statistic import DatasetStatistic, DatasetStatisticList
+from ._classification_statistic import ClassificationStatistic
 
 
-class Accuracy(ClassificationStatisticWithAverage):
+class Accuracy(ClassificationStatistic):
     """
     Calculates the accuracy for image classification data.
     """
 
-    def __init__(self, num_classes: int = None, average: str = None, top_k: int = None,
+    def __init__(self, num_classes: int = None, top_k: int = None,
                  logger_name: str = None, logging_level: str = LOGGING_WARNING):
         """
         Initializes the filter.
 
         :param num_classes: the number of classes
         :type num_classes: int
-        :param average: the average to use
-        :type average: str
         :param top_k: only compute the accuracy for the top K classes
         :type top_k: int
         :param logger_name: the name to use for the logger
@@ -26,7 +27,7 @@ class Accuracy(ClassificationStatisticWithAverage):
         :param logging_level: the logging level to use
         :type logging_level: str
         """
-        super().__init__(num_classes=num_classes, average=average, logger_name=logger_name, logging_level=logging_level)
+        super().__init__(num_classes=num_classes, logger_name=logger_name, logging_level=logging_level)
         self.top_k = top_k
 
     def name(self) -> str:
@@ -77,12 +78,19 @@ class Accuracy(ClassificationStatisticWithAverage):
         """
         return "Accuracy"
 
-    def _initialize_statistic(self):
+    def calculate(self, anns, preds, meta=None) -> Union[DatasetStatistic, DatasetStatisticList]:
         """
-        Initializes the processing, e.g., for opening files or databases.
+        Calculates the statistic from the tensors with annotations and predictions.
+
+        :param anns: the tensor with the class label indices of the annotations
+        :param preds: the tensor with the class label indices of the predictions
+        :param meta: optional meta-data that is required for the calculation (domain-specific)
+        :return: the generated statistic(s)
+        :rtype: DatasetStatistic or DatasetStatisticList
         """
-        import torchmetrics
+        result = DatasetStatistic(statistic=self._statistic_name())
         if self.top_k is not None:
-            self._statistic = torchmetrics.Accuracy(task="multiclass", average=self.average, num_classes=self.num_classes, top_k=self.top_k)
+            result.value = accuracy_score(anns, preds)
         else:
-            self._statistic = torchmetrics.Accuracy(task="multiclass", average=self.average, num_classes=self.num_classes)
+            result.value = top_k_accuracy_score(anns, preds, k=self.top_k)
+        return result

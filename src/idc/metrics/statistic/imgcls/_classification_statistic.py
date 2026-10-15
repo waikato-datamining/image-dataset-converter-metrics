@@ -1,6 +1,7 @@
 import abc
 import argparse
 import logging
+import numpy as np
 from typing import List, Tuple, Optional, Dict, Any, Union
 
 from wai.logging import LOGGING_WARNING
@@ -10,7 +11,7 @@ from kasperl.api import make_list
 from idc.metrics.statistic import DatasetStatisticFilter, DatasetStatistic, DatasetStatisticList, NumClassesHandler
 
 
-def prepare_data(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Optional[Any], Optional[Any], Optional[Dict[str, int]]]:
+def prepare_data(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Optional[np.ndarray], Optional[np.ndarray], Optional[Dict[str, int]]]:
     """
     Processes the image pairs and returns the classes and the lookup.
 
@@ -21,8 +22,6 @@ def prepare_data(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Op
     :return: the tuple of: annotation classes, predictions classes and the class lookup
     :rtype: tuple
     """
-    from torch import tensor
-
     classes = set()
     for pair in make_list(data):
         if pair.annotation.has_annotation() and pair.prediction.has_annotation():
@@ -42,8 +41,8 @@ def prepare_data(data: ImagePairList, logger: logging.Logger = None) -> Tuple[Op
             if pair.annotation.has_annotation() and pair.prediction.has_annotation():
                 anns.append(lookup[pair.annotation.annotation])
                 preds.append(lookup[pair.prediction.annotation])
-        anns = tensor(anns)
-        preds = tensor(preds)
+        anns = np.asarray(anns)
+        preds = np.asarray(preds)
         return anns, preds, lookup
 
     return None, None, None
@@ -68,7 +67,6 @@ class ClassificationStatistic(DatasetStatisticFilter, NumClassesHandler, abc.ABC
         """
         super().__init__(logger_name=logger_name, logging_level=logging_level)
         self.num_classes = num_classes
-        self._statistic = None
 
     def _create_argparser(self) -> argparse.ArgumentParser:
         """
@@ -99,12 +97,6 @@ class ClassificationStatistic(DatasetStatisticFilter, NumClassesHandler, abc.ABC
         :type num_classes: int
         """
         self.num_classes = num_classes
-
-    def _initialize_statistic(self):
-        """
-        Initializes the processing, e.g., for opening files or databases.
-        """
-        raise NotImplementedError()
 
     def _statistic_name(self):
         """
@@ -147,11 +139,7 @@ class ClassificationStatistic(DatasetStatisticFilter, NumClassesHandler, abc.ABC
         :return: the generated statistic(s)
         :rtype: DatasetStatistic or DatasetStatisticList
         """
-        if self._statistic is None:
-            self._initialize_statistic()
-        result = DatasetStatistic(statistic=self._statistic_name())
-        result.value = float(self._statistic(anns, preds))
-        return result
+        raise NotImplementedError()
 
     def _do_process(self, data):
         """
@@ -219,7 +207,7 @@ class ClassificationStatisticWithAverage(ClassificationStatistic, abc.ABC):
         :return: the averages
         :rtype: list
         """
-        return ["micro", "macro", "weighted", "none"]
+        raise NotImplementedError()
 
     def _default_average(self) -> str:
         """
@@ -228,4 +216,4 @@ class ClassificationStatisticWithAverage(ClassificationStatistic, abc.ABC):
         :return: the default
         :rtype: str
         """
-        return "micro"
+        raise NotImplementedError()

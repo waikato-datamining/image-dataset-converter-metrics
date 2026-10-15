@@ -1,4 +1,9 @@
+from typing import Union
+
+from sklearn.metrics import cohen_kappa_score
+
 from ._classification_statistic import ClassificationStatistic
+from idc.metrics.statistic import DatasetStatistic, DatasetStatisticList
 
 
 class CohenKappa(ClassificationStatistic):
@@ -33,9 +38,16 @@ class CohenKappa(ClassificationStatistic):
         """
         return "Cohen-Kappa"
 
-    def _initialize_statistic(self):
+    def calculate(self, anns, preds, meta=None) -> Union[DatasetStatistic, DatasetStatisticList]:
         """
-        Initializes the processing, e.g., for opening files or databases.
+        Calculates the statistic from the tensors with annotations and predictions.
+
+        :param anns: the tensor with the class label indices of the annotations
+        :param preds: the tensor with the class label indices of the predictions
+        :param meta: optional meta-data that is required for the calculation (domain-specific)
+        :return: the generated statistic(s)
+        :rtype: DatasetStatistic or DatasetStatisticList
         """
-        import torchmetrics
-        self._statistic = torchmetrics.CohenKappa(task="multiclass", num_classes=self.num_classes)
+        result = DatasetStatistic(statistic=self._statistic_name())
+        result.value = cohen_kappa_score(anns, preds)
+        return result

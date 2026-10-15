@@ -1,9 +1,14 @@
+from typing import Union, List
+
+from sklearn.metrics import recall_score
+
 from ._classification_statistic import ClassificationStatisticWithAverage
+from idc.metrics.statistic import DatasetStatistic, DatasetStatisticList
 
 
 class Recall(ClassificationStatisticWithAverage):
     """
-    Calculates the Recall for image classification data.
+    Calculates the Precision for image classification data.
     """
 
     def name(self) -> str:
@@ -33,9 +38,34 @@ class Recall(ClassificationStatisticWithAverage):
         """
         return "Recall"
 
-    def _initialize_statistic(self):
+    def _averages(self) -> List[str]:
         """
-        Initializes the processing, e.g., for opening files or databases.
+        Returns the possible averages.
+
+        :return: the averages
+        :rtype: list
         """
-        import torchmetrics
-        self._statistic = torchmetrics.Recall(task="multiclass", average=self.average, num_classes=self.num_classes)
+        return ["micro", "macro", "samples", "weighted", "binary"]
+
+    def _default_average(self) -> str:
+        """
+        Returns the default average.
+
+        :return: the default
+        :rtype: str
+        """
+        return "binary"
+
+    def calculate(self, anns, preds, meta=None) -> Union[DatasetStatistic, DatasetStatisticList]:
+        """
+        Calculates the statistic from the tensors with annotations and predictions.
+
+        :param anns: the tensor with the class label indices of the annotations
+        :param preds: the tensor with the class label indices of the predictions
+        :param meta: optional meta-data that is required for the calculation (domain-specific)
+        :return: the generated statistic(s)
+        :rtype: DatasetStatistic or DatasetStatisticList
+        """
+        result = DatasetStatistic(statistic=self._statistic_name())
+        result.value = recall_score(anns, preds, average=self.average)
+        return result
