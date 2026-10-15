@@ -5,7 +5,7 @@ from wai.logging import LOGGING_WARNING
 
 from idc.metrics.api import ImagePairList
 from idc.metrics.registry import available_objdet_statistics
-from idc.metrics.statistic import DatasetStatisticList, NumClassesHandler
+from idc.metrics.statistic import DatasetStatisticList
 from idc.metrics.statistic.objdet import MSCOCOObjectDetectionStatistic, prepare_mscoco_data
 from seppl import SessionHandler, split_args, Plugin, Initializable, init_initializable, split_cmdline
 from seppl.io import BatchFilter
