@@ -5,6 +5,9 @@
 * [precision-ic](precision-ic.md)
 * [recall-ic](recall-ic.md)
 
+## Image segmentation
+* [dice-score-is](dice-score-is.md)
+* [mean-iou-is](mean-iou-is.md)
+
 ## Object detection
-* [bbox-iou-od](bbox-iou-od.md)
-* [mean-average-precision-od](mean-average-precision-od.md)
+* [average-precision-od](average-precision-od.md)

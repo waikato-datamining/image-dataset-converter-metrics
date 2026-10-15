@@ -6,7 +6,7 @@ from wai.logging import LOGGING_WARNING
 from idc.metrics.api import ImagePairList
 from idc.metrics.registry import available_objdet_statistics
 from idc.metrics.statistic import DatasetStatisticList, NumClassesHandler
-from idc.metrics.statistic.objdet import ObjectDetectionStatistic, prepare_data
+from idc.metrics.statistic.objdet import MSCOCOObjectDetectionStatistic, prepare_mscoco_data
 from seppl import SessionHandler, split_args, Plugin, Initializable, init_initializable, split_cmdline
 from seppl.io import BatchFilter
 
@@ -118,7 +118,7 @@ class SummaryStatistics(BatchFilter):
         self._statistics = self._parse_statistics()
 
         for statistic in self._statistics:
-            if not isinstance(statistic, ObjectDetectionStatistic):
+            if not isinstance(statistic, MSCOCOObjectDetectionStatistic):
                 raise Exception("Not an object detection statistic: %s" % str(type(statistic)))
             if isinstance(statistic, SessionHandler):
                 statistic.session = self.session
@@ -132,14 +132,14 @@ class SummaryStatistics(BatchFilter):
         :param data: the record(s) to process
         :return: the potentially updated record(s)
         """
-        anns, preds, lookup = prepare_data(data, logger=self.logger())
+        prepared = dict()
         result = DatasetStatisticList()
         for statistic in self._statistics:
-            if isinstance(statistic, NumClassesHandler):
-                statistic.set_num_classes(len(lookup))
-            if isinstance(statistic, ObjectDetectionStatistic):
+            if isinstance(statistic, MSCOCOObjectDetectionStatistic):
+                if "mscoco" not in prepared:
+                    prepared["mscoco"] = prepare_mscoco_data(data, logger=self.logger())
                 try:
-                    stat = statistic.calculate(anns, preds, meta=lookup)
+                    stat = statistic.calculate(*prepared["mscoco"])
                     if isinstance(stat, DatasetStatisticList):
                         result.extend(stat)
                     else:

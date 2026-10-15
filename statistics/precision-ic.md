@@ -8,7 +8,7 @@ Calculates the Precision for image classification data.
 ```
 usage: precision-ic [-h] [-l {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
                     [-N LOGGER_NAME] [--skip] [-n NUM_CLASSES]
-                    [-a {micro,macro,weighted,none}]
+                    [-a {micro,macro,samples,weighted,binary}]
 
 Calculates the Precision for image classification data.
 
@@ -23,6 +23,6 @@ options:
                         (default: False)
   -n NUM_CLASSES, --num_classes NUM_CLASSES
                         The number of classes in the dataset. (default: None)
-  -a {micro,macro,weighted,none}, --average {micro,macro,weighted,none}
-                        The average to use. (default: micro)
+  -a {micro,macro,samples,weighted,binary}, --average {micro,macro,samples,weighted,binary}
+                        The average to use. (default: binary)
 ```

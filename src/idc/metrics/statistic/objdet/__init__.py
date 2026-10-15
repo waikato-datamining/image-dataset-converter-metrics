@@ -1,3 +1,3 @@
-from ._object_detection_statistic import prepare_data, ObjectDetectionStatistic, ObjectDetectionStatisticWithClassMetrics
-from ._bbox_iou import BBoxIoU
-from ._mean_average_precision import MeanAveragePrecision
+from ._object_detection_statistic import ObjectDetectionStatistic
+from ._object_detection_statistic import prepare_mscoco_data, MSCOCOObjectDetectionStatistic
+from ._average_precision import AveragePrecision

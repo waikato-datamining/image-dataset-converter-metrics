@@ -7,8 +7,7 @@ Calculates the accuracy for image classification data.
 
 ```
 usage: accuracy-ic [-h] [-l {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
-                   [-N LOGGER_NAME] [--skip] [-n NUM_CLASSES]
-                   [-a {micro,macro,weighted,none}] [-k TOP_K]
+                   [-N LOGGER_NAME] [--skip] [-n NUM_CLASSES] [-k TOP_K]
 
 Calculates the accuracy for image classification data.
 
@@ -23,8 +22,6 @@ options:
                         (default: False)
   -n NUM_CLASSES, --num_classes NUM_CLASSES
                         The number of classes in the dataset. (default: None)
-  -a {micro,macro,weighted,none}, --average {micro,macro,weighted,none}
-                        The average to use. (default: micro)
   -k TOP_K, --top_k TOP_K
                         Only take the top K classes into account. (default: 1)
 ```
