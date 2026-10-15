@@ -5,7 +5,7 @@ from typing import Dict, Optional, Union, Tuple, Any
 from idc.api import get_object_label
 from idc.metrics.api import ImagePairList
 from idc.metrics.statistic import DatasetStatisticFilter, DatasetStatistic, DatasetStatisticList
-from idc.writer.objdet import COCOAnnotations
+from idc.api import COCOAnnotations
 from kasperl.api import make_list
 
 
