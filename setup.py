@@ -33,6 +33,7 @@ setup(
         "image_dataset_converter",
         "torchmetrics[image,visual]",
         "pycocotools",
+        "scikit-learn",
     ],
     version="0.0.1",
     author='Peter Reutemann',
