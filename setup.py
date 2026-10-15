@@ -32,7 +32,6 @@ setup(
     install_requires=[
         "image_dataset_converter",
         "torchmetrics[image,visual]",
-        "pycocotools",
         "scikit-learn",
     ],
     version="0.0.1",
