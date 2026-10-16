@@ -1,3 +1,2 @@
-from ._image_segmentation_statistic import prepare_data, ImageSegmentationStatistic, ImageSegmentationStatisticWithPerClass
-from ._dice_score import DiceScore
-from ._mean_iou import MeanIntersectionOverUnion
+from ._image_segmentation_statistic import prepare_mscoco_data, ImageSegmentationStatistic, MSCOCOImageSegmentationStatistic
+from ._average_precision import AveragePrecision

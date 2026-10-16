@@ -72,8 +72,8 @@ class ObjectDetectionStatistic(DatasetStatisticFilter, abc.ABC):
         """
         Calculates the statistic from the tensors with annotations and predictions.
 
-        :param anns: the list of annotations (dict of tensors/labels)
-        :param preds: the list of predictions (dict of tensors/labels)
+        :param anns: the list of annotations
+        :param preds: the list of predictions
         :param meta: optional meta-data that is required for the calculation (domain-specific)
         :return: the generated statistic(s)
         :rtype: DatasetStatistic or DatasetStatisticList

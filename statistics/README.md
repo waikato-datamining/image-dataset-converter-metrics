@@ -6,8 +6,7 @@
 * [recall-ic](recall-ic.md)
 
 ## Image segmentation
-* [dice-score-is](dice-score-is.md)
-* [mean-iou-is](mean-iou-is.md)
+* [average-precision-is](average-precision-is.md)
 
 ## Object detection
 * [average-precision-od](average-precision-od.md)
